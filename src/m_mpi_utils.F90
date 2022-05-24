@@ -3,7 +3,7 @@ module mpi_utils
   use mpi
   use, intrinsic :: iso_c_binding
 
- implicit none
+  implicit none
 
 contains
 
@@ -38,24 +38,23 @@ contains
   !! this routine is only meant to be called from C/CUDA
   subroutine mpi_sum_int_c(data_ptr,data_size,comm,ier) bind(c, name="mpi_sum_int_c")
 
-  use, intrinsic :: iso_c_binding, only: c_associated,c_loc,c_ptr,c_f_pointer,c_int32_t
-  implicit none
+    use, intrinsic :: iso_c_binding, only: c_associated,c_loc,c_ptr,c_f_pointer,c_int32_t
+    implicit none
 
-  ! dummy args
-  type(c_ptr),                    intent(inout) :: data_ptr
-  integer(kind=c_int32_t), value, intent(in)    :: data_size
-  integer(kind=c_int32_t),        intent(in)    :: comm
-  integer(kind=c_int32_t),        intent(out)   :: ier
+    ! dummy args
+    type(c_ptr),                    intent(inout) :: data_ptr
+    integer(kind=c_int32_t), value, intent(in)    :: data_size
+    integer(kind=c_int32_t),        intent(in)    :: comm
+    integer(kind=c_int32_t),        intent(out)   :: ier
 
-  ! local vars
-  integer(kind=c_int32_t), pointer              :: data(:) => null()
+    ! local vars
+    integer(kind=c_int32_t), pointer              :: data(:) => null()
 
-  ! convert the c pointer into a fortran array
-  call c_f_pointer(data_ptr, data, [data_size])
+    ! convert the c pointer into a fortran array
+    call c_f_pointer(data_ptr, data, [data_size])
 
-  call mpi_sum_int(data, comm, ier)
+    call mpi_sum_int(data, comm, ier)
 
-end subroutine mpi_sum_int_c
-
+  end subroutine mpi_sum_int_c
 
 end module mpi_utils
