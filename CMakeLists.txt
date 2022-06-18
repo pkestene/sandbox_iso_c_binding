@@ -58,6 +58,39 @@ if (USE_MPI)
   endif()
 endif()
 
+# if CUDA available ? i.e. checking for a CUDA compiler
+include(CheckLanguage)
+check_language(CUDA)
+if (CMAKE_CUDA_COMPILER STREQUAL "NVIDIA")
+  enable_language(cuda)
+  set(CUDA_ENABLED ON)
+else()
+  set(CUDA_ENABLED OFF)
+endif()
+
+# check for thrust (Nvidia CUDA/OpenMP)
+# you'll probably need to adjust env var CMAKE_PREFIX_PATH, e.g.
+# export CMAKE_PREFIX_PATH=/usr/local/cuda-11.7/targets/x86_64-linux/lib/cmake:$CMAKE_PREFIX_PATH
+find_package(Thrust)
+if (Thrust_FOUND)
+
+  if(CUDA_ENABLED)
+    thrust_create_target(Thrust)
+  else()
+    thrust_create_target(ThrustOMP HOST CPP DEVICE OMP)
+  endif()
+
+  # enable build of a test using thrust inside fortran (OpenMP or CUDA backend) wrapped
+  # using iso_c_binding
+  set(DO_FORTRAN_THRUST_TEST ON)
+
+else()
+
+  message("Nvidia Thrust library not found")
+
+endif()
+
+
 #####################################################################
 add_subdirectory(src)
 
@@ -80,3 +113,5 @@ message("  Fortran compiler Id  : ${CMAKE_Fortran_COMPILER_ID} ${CMAKE_Fortran_C
 message("  Fortran compiler exe :${CMAKE_Fortran_COMPILER}")
 message("  Fortran flags        : ${CMAKE_Fortran_FLAGS}")
 message("")
+message("  Thrust               : ${Thrust_FOUND}")
+message("  CUDA enabled         : ${CUDA_ENABLED}")
