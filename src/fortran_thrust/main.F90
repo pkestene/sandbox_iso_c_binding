@@ -31,9 +31,13 @@ program test_fortran_thrust
 
  data_ptr = c_loc(data(1))
 
+#ifdef USE_THRUST_OPENMP
  call f_thrust_openmp(data_ptr, size(data), data_sum)
-
  write(*,*) "(thrust openmp) sum(data)=", data_sum
+#else
+ call f_thrust_cuda(data_ptr, size(data), data_sum)
+ write(*,*) "(thrust cuda) sum(data)=", data_sum
+#endif
 
  deallocate(data)
 

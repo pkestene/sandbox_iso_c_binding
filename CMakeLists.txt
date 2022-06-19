@@ -59,10 +59,11 @@ if (USE_MPI)
 endif()
 
 # if CUDA available ? i.e. checking for a CUDA compiler
+# if cuda compiler is not found, the test checking CMAKE_CUDA_COMPILER will fail
 include(CheckLanguage)
 check_language(CUDA)
-if (CMAKE_CUDA_COMPILER STREQUAL "NVIDIA")
-  enable_language(cuda)
+if (CMAKE_CUDA_COMPILER)
+  enable_language(CUDA)
   set(CUDA_ENABLED ON)
 else()
   set(CUDA_ENABLED OFF)
