@@ -42,10 +42,10 @@ contains
     implicit none
 
     ! dummy args
-    type(c_ptr),                    intent(inout) :: data_ptr
-    integer(kind=c_int32_t), value, intent(in)    :: data_size
-    integer(kind=c_int32_t),        intent(in)    :: comm
-    integer(kind=c_int32_t),        intent(out)   :: ier
+    type(c_ptr)            , value, intent(in)  :: data_ptr
+    integer(kind=c_int32_t), value, intent(in)  :: data_size
+    integer(kind=c_int32_t),        intent(in)  :: comm
+    integer(kind=c_int32_t),        intent(out) :: ier
 
     ! local vars
     integer(kind=c_int32_t), pointer              :: data(:) => null()

@@ -8,7 +8,7 @@ module do_stuff_wrap
      subroutine f_do_stuff(data_ptr, data_size, f_comm, nproc) bind(c, name='do_stuff')
        use, intrinsic :: iso_c_binding
        implicit none
-       type(c_ptr)            ,        intent(in) :: data_ptr
+       type(c_ptr)            , value, intent(in) :: data_ptr
        integer(kind=c_int32_t), value, intent(in) :: data_size
        integer(kind=c_int32_t)                    :: f_comm
        integer(kind=c_int32_t), value, intent(in) :: nproc
